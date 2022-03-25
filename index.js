@@ -10,6 +10,12 @@ app.get("/", (req, res) => {
   res.send("Bienvenidos a la app!");
 });
 
+app.get("/usuarios", (req, res) => {
+  axios.get("https://jsonplaceholder.typicode.com/users").then((response) => {
+    res.status(200).send({ usuarios: response.data });
+  });
+});
+
 //si no existe la ruta, mostramos mensaje de error
 app.use((req, res) => {
   if (res) {
