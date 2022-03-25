@@ -16,6 +16,21 @@ app.get("/usuarios", (req, res) => {
   });
 });
 
+//buscamos a usuario por su id
+app.get("/usuarios/:idUsuario", (req, res) => {
+  let idUsuario = req.params.idUsuario;
+
+  axios
+    .get(`https://jsonplaceholder.typicode.com/users?id=${idUsuario}`)
+    .then((response) => {
+      if (response.data.length > 0) {
+        res.status(200).send({ usuario: response.data });
+      } else {
+        res.status(404).send({ error: "No existe usuario" });
+      }
+    });
+});
+
 //si no existe la ruta, mostramos mensaje de error
 app.use((req, res) => {
   if (res) {
