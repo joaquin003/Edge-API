@@ -11,9 +11,31 @@ app.get("/", (req, res) => {
 });
 
 app.get("/usuarios", (req, res) => {
-  axios.get("https://jsonplaceholder.typicode.com/users").then((response) => {
-    res.status(200).send({ usuarios: response.data });
-  });
+  const { pag } = req.query;
+
+  //si agregamos el parametro ?pag a url
+  if (pag) {
+    if (pag == "1") {
+      axios
+        .get("https://jsonplaceholder.typicode.com/users?_start=0&_limit=5")
+        .then((response) => {
+          res.status(200).send({ usuarios: response.data });
+        });
+    } else if (pag == "2") {
+      axios
+        .get("https://jsonplaceholder.typicode.com/users?_start=5&_limit=5")
+        .then((response) => {
+          res.status(200).send({ usuarios: response.data });
+        });
+    } else {
+      res.status(404).send({ error: "Ya no hay más usuarios que mostrar" });
+    }
+  } else {
+    //si no hay el parametro, se trae a todos los usuarios de manera ascendente
+    axios.get("https://jsonplaceholder.typicode.com/users").then((response) => {
+      res.status(200).send({ usuarios: response.data });
+    });
+  }
 });
 
 //buscamos a usuario por su id
